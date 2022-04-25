@@ -32,7 +32,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-		
+		Novice::DrawLine(100, 100, 100, 500, BLACK);
+		Novice::DrawLine(500, 100, 500, 500, BLACK);
+		Novice::DrawLine(100, 100, 500, 100, BLACK);
+		Novice::DrawLine(100, 500, 500, 500, BLACK);
 		///
 		/// ↑描画処理ここまで
 		///
