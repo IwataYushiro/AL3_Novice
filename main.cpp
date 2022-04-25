@@ -40,7 +40,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		for (int i = 0; i < 4; i++) {
-			Novice::DrawBox(box[i][0], box[i][1], 100, 100, 0, BLUE, kFillModeSolid);
+			Novice::DrawLine(box[i][0], box[i][1], box[(i + 1) % 4][0], box[(i + 1) % 4][1], RED);
 		}
 		///
 		/// ↑描画処理ここまで
