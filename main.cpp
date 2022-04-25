@@ -8,6 +8,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// ライブラリの初期化
 	Novice::Initialize(kWindowTitle, 1280, 720);
 
+	//初期化
+	float box[4][3] = {
+	  {100, 100, 1.0f},
+      {100, 400, 1.0f},
+      {400, 400, 1.0f},
+      {400, 100, 1.0f}
+    };
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
 	char preKeys[256] = {0};
@@ -32,7 +39,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-		
+		for (int i = 0; i < 4; i++) {
+			Novice::DrawBox(box[i][0], box[i][1], 100, 100, 0, BLUE, kFillModeSolid);
+		}
 		///
 		/// ↑描画処理ここまで
 		///
