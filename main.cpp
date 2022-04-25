@@ -10,10 +10,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//初期化
 	float box[4][3] = {
-	  {100, 100, 1.0f},
-      {100, 400, 1.0f},
-      {400, 400, 1.0f},
-      {400, 100, 1.0f}
+	  {100, 100, 100},
+      {100, 400, 100},
+      {400, 400, 100},
+      {400, 100, 100}
     };
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -39,9 +39,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
+		/// 1,平行移動
 		for (int i = 0; i < 4; i++) {
-			Novice::DrawLine(box[i][0], box[i][1], box[(i + 1) % 4][0], box[(i + 1) % 4][1], RED);
+			Novice::DrawLine(
+			  box[i][0] + box[i][2], box[i][1] + box[i][2], box[(i + 1) % 4][0] + box[i][2],
+			  box[(i + 1) % 4][1] + box[i][2], RED);
 		}
+
 		///
 		/// ↑描画処理ここまで
 		///
