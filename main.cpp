@@ -49,32 +49,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		/// 1,平行移動
-		
+		/*
 		for (int i = 0; i < 4; i++) {
 		    Novice::DrawLine(
 			  box[i][0] * 1 + box[i][1] * 0 + box[i][2]*1,
 			  box[i][0] * 0 + box[i][1] * 1 + box[i][2] * 1,
 			  box[(i + 1) % 4][0] * 1 + box[(i + 1) % 4][1] * 0 + box[i][2] * 1,
-			  box[(i + 1) % 4][0] * 0 + box[(i + 1) % 4][1] * 1 + box[i][2] * 1, BLUE);
-		}
+			  box[(i + 1) % 4][0] * 0 + box[(i + 1) % 4][1] * 1 + box[i][2] * 1, BLACK);
+		}*/
 
 		/// 2,回転
-		for (int i = 0; i < 4; i++) {
+		/*for (int i = 0; i < 4; i++) {
 			Novice::DrawLine(
 			  box[i][0] * cos(PI / 4) + box[i][1] * -sin(PI/4) + box[i][2] * 1,
 			  box[i][0] * sin(PI / 4) + box[i][1] * cos(PI/4) + box[i][2] * 1,
 			  box[(i + 1) % 4][0] * cos(PI / 4) + box[(i + 1) % 4][1] * -sin(PI / 4) + box[i][2] * 1,
 			  box[(i + 1) % 4][0] * sin(PI / 4) + box[(i + 1) % 4][1] * cos(PI / 4) + box[i][2] * 1,
-				RED);
-		}
+				BLACK);
+		}*/
 		///
 		/// 
-		/*/// 3,拡大
+		/// 3,拡大,縮小
+		
 		for (int i = 0; i < 4; i++) {
 			Novice::DrawLine(
-			  box[i][0], box[i][1], box[(i + 1) % 4][0],
-			  box[(i + 1) % 4][1], GREEN);
-		}*/
+			  box[i][0] * 2 + box[i][1] * 0 + box[i][2] * 0,
+			  box[i][0] * 0 + box[i][1] * 2 + box[i][2] * 0,
+			  box[(i + 1) % 4][0] * 2 + box[(i + 1) % 4][1] * 0 + box[i][2] * 0,
+			  box[(i + 1) % 4][0] * 0 + box[(i + 1) % 4][1] * 2 + box[i][2] * 0, GREEN);
+		}
+
+		for (int i = 0; i < 4; i++) {
+			Novice::DrawLine(
+			  box[i][0] * 1/2 + box[i][1] * 0 + box[i][2] * 0,
+			  box[i][0] * 0 + box[i][1] * 1/2 + box[i][2] * 0,
+			  box[(i + 1) % 4][0] * 1/2 + box[(i + 1) % 4][1] * 0 + box[i][2] * 0,
+			  box[(i + 1) % 4][0] * 0 + box[(i + 1) % 4][1] * 1/2 + box[i][2] * 0, WHITE);
+		}
 		///
 		/// 0,ベース
 		for (int i = 0; i < 4; i++) {
