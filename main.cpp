@@ -1,4 +1,5 @@
 ﻿#include <Novice.h>
+#define PI 3.14159265
 
 const char kWindowTitle[] = "LE2B_07_イワタ_ユウシロウ";
 
@@ -10,6 +11,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	//初期化
 	float box[4][3] = {
+	  {100,                     100 + ((400 - 100) / 2), 100},
+	  {100 + ((400 - 100) / 2), 400,                     100},
+	  {400,                     400 + ((100 - 400) / 2), 100},
+	  {400 + ((100 - 400) / 2), 100,                     100}
+    };
+
+	float box2[4][3] = {
 	  {100, 100, 100},
       {100, 400, 100},
       {400, 400, 100},
@@ -40,13 +48,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 		/// 1,平行移動
+		/*
+		for (int i = 0; i < 4; i++) {
+		    Novice::DrawLine(
+		      box[i][0] + box[i][2], box[i][1] + box[i][2], box[(i + 1) % 4][0] + box[i][2],
+		      box[(i + 1) % 4][1] + box[i][2],BLUE);
+		}*/
+
+		/// 2,回転
 		for (int i = 0; i < 4; i++) {
 			Novice::DrawLine(
-			  box[i][0] + box[i][2], box[i][1] + box[i][2], box[(i + 1) % 4][0] + box[i][2],
-			  box[(i + 1) % 4][1] + box[i][2], RED);
+			  box[i][0] * PI / 2, box[i][1] * PI / 2, box[(i + 1) % 4][0] * PI / 2,
+			  box[(i + 1) % 4][1] * PI / 2, RED);
 		}
-
 		///
+		/// 1,平行移動
+		for (int i = 0; i < 4; i++) {
+			Novice::DrawLine(
+			  box2[i][0], box2[i][1], box2[(i + 1) % 4][0],
+			  box2[(i + 1) % 4][1], BLUE);
+		}
 		/// ↑描画処理ここまで
 		///
 
