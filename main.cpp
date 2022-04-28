@@ -41,62 +41,52 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 回転のためのアフィン行列
 	float affinRotated[3][3] = {
-	  {cos(45), -sin(45), -100.0f},
-      {sin(45), cos(45),  -100.0f},
-      {0.0f,    0.0f,     1.0f}
+	  {cos(PI / 4), -sin(PI / 4), 100.0f},
+      {sin(PI / 4), cos(PI / 4),  -40.0f},
+      {0.0f,        0.0f,         1.0f  }
     };
-	// 拡大ののためのアフィン行列
+	// 拡大のためのアフィン行列
 	float affinScaled[3][3]{
-	  {2.0f, 0.0f,-100.0f},
+	  {2.0f, 0.0f, -100.0f},
       {0.0f, 2.0f, -100.0f},
-      {0.0f, 0.0f, 1.0f}
+      {0.0f, 0.0f, 1.0f   }
     };
 	// 平行移動の計算
 	for (int i = 0; i < 4; i++) {
-		boxMoved[i][0] = affinMove[0][0] * boxBase[i][0] + 
-						 affinMove[0][1] * boxBase[i][1] +
+
+		boxMoved[i][0] = affinMove[0][0] * boxBase[i][0] + affinMove[0][1] * boxBase[i][1] +
 		                 affinMove[0][2] * boxBase[i][2];
 
-		boxMoved[i][1] = affinMove[1][0] * boxBase[i][0] + 
-						 affinMove[1][1] * boxBase[i][1] +
+		boxMoved[i][1] = affinMove[1][0] * boxBase[i][0] + affinMove[1][1] * boxBase[i][1] +
 		                 affinMove[1][2] * boxBase[i][2];
 
-		boxMoved[i][2] = affinMove[2][0] * boxBase[i][0] + 
-						 affinMove[2][1] * boxBase[i][1] +
+		boxMoved[i][2] = affinMove[2][0] * boxBase[i][0] + affinMove[2][1] * boxBase[i][1] +
 		                 affinMove[2][2] * boxBase[i][2];
 	}
 
 	// 回転の計算
 	for (int i = 0; i < 4; i++) {
-		
-						   
-		boxRotated[i][0] = affinRotated[0][0] * boxRotated[i][0] +
-		                   affinRotated[0][1] * boxRotated[i][1] +
-		                   affinRotated[0][2] * boxRotated[i][2];
 
-		boxRotated[i][1] = affinRotated[1][0] * boxRotated[i][0] +
-		                   affinRotated[1][1] * boxRotated[i][1] +
-		                   affinRotated[1][2] * boxRotated[i][2];
+		boxRotated[i][0] = affinRotated[0][0] * boxBase[i][0] + affinRotated[0][1] * boxBase[i][1] +
+		                   affinRotated[0][2] * boxBase[i][2];
 
-		boxRotated[i][2] = affinRotated[2][0] * boxRotated[i][0] +
-		                   affinRotated[2][1] * boxRotated[i][1] +
-		                   affinRotated[2][2] * boxRotated[i][2];
-	
+		boxRotated[i][1] = affinRotated[1][0] * boxBase[i][0] + affinRotated[1][1] * boxBase[i][1] +
+		                   affinRotated[1][2] * boxBase[i][2];
+
+		boxRotated[i][2] = affinRotated[2][0] * boxBase[i][0] + affinRotated[2][1] * boxBase[i][1] +
+		                   affinRotated[2][2] * boxBase[i][2];
 	}
 	// 拡大の計算
 	for (int i = 0; i < 4; i++) {
 
 		boxScaled[i][0] = affinScaled[0][0] * boxScaled[i][0] +
-		                  affinScaled[0][1] * boxScaled[i][1] + 
-						  affinScaled[0][2] * boxScaled[i][2];
+		                  affinScaled[0][1] * boxScaled[i][1] + affinScaled[0][2] * boxScaled[i][2];
 
 		boxScaled[i][1] = affinScaled[1][0] * boxScaled[i][0] +
-		                  affinScaled[1][1] * boxScaled[i][1] +
-						  affinScaled[1][2] * boxScaled[i][2];
+		                  affinScaled[1][1] * boxScaled[i][1] + affinScaled[1][2] * boxScaled[i][2];
 
 		boxScaled[i][2] = affinScaled[2][0] * boxScaled[i][0] +
-		                  affinScaled[2][1] * boxScaled[i][1] + 
-						  affinScaled[2][2] * boxScaled[i][2];
+		                  affinScaled[2][1] * boxScaled[i][1] + affinScaled[2][2] * boxScaled[i][2];
 	}
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -136,11 +126,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 			  boxMoved[i][0], boxMoved[i][1], boxMoved[(i + 1) % 4][0], boxMoved[(i + 1) % 4][1],
 			  BLUE);
 		}
-		//2,回転
+		// 2,回転
 		for (int i = 0; i < 4; i++) {
 			Novice::DrawLine(
-			  boxRotated[i][0], boxRotated[i][1],
-			  boxRotated[(i + 1) % 4][0],
+			  boxRotated[i][0], boxRotated[i][1], boxRotated[(i + 1) % 4][0],
 			  boxRotated[(i + 1) % 4][1], RED);
 		}
 
