@@ -18,6 +18,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	  {400.0f, 100.0f, 1.0f}
     };
 
+	//原点へ
+	float boxOrigin[4][3] = {
+	  {100.0f, 100.0f, 1.0f},
+	  {100.0f, 400.0f, 1.0f},
+	  {400.0f, 400.0f, 1.0f},
+	  {400.0f, 100.0f, 1.0f}
+    };
 	// 移動・回転・拡大の行列の宣言と初期化
 	float boxMoved[4][3];
 	float boxRotated[4][3];
@@ -40,17 +47,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
     };
 
 	// 回転のためのアフィン行列
-	float affinRotated[3][3] = {
-	  {cos(PI / 4), -sin(PI / 4), 100.0f},
-      {sin(PI / 4), cos(PI / 4),  -40.0f},
-      {0.0f,        0.0f,         1.0f  }
-    };
-	// 拡大のためのアフィン行列
-	float affinScaled[3][3]{
-	  {2.0f, 0.0f, -100.0f},
-      {0.0f, 2.0f, -100.0f},
+
+	//原点へ平行移動する用
+	float affinMoveOrigin[3][3] = {
+	  {1.0f, 0.0f, -100.0f},
+      {0.0f, 1.0f, -100.0f},
       {0.0f, 0.0f, 1.0f   }
     };
+
+	//回転処理用
+	float affinRotated[3][3] = {
+	  {cos(PI / 4), -sin(PI / 4), 0.0f},
+      {sin(PI / 4), cos(PI / 4),  0.0f},
+      {0.0f,        0.0f,         1.0f  }
+    };
+
+	//元居た位置に戻る用
+	float affinMoveAfter[3][3] = {
+	  {1.0f, 0.0f, 100.0f},
+      {0.0f, 1.0f, 100.0f},
+      {0.0f, 0.0f, 1.0f   }
+    };
+
+	// 拡大のためのアフィン行列
+	float affinScaled[3][3]{
+	  {2.0f, 0.0f, 0.0f},
+      {0.0f, 2.0f, 0.0f},
+      {0.0f, 0.0f, 1.0f   }
+    };
+
 	// 平行移動の計算
 	for (int i = 0; i < 4; i++) {
 
@@ -65,28 +90,70 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	// 回転の計算
+
+	//原点へ移動する
 	for (int i = 0; i < 4; i++) {
 
-		boxRotated[i][0] = affinRotated[0][0] * boxBase[i][0] + affinRotated[0][1] * boxBase[i][1] +
-		                   affinRotated[0][2] * boxBase[i][2];
+		boxOrigin[i][0] = affinMoveOrigin[0][0] * boxBase[i][0] + affinMoveOrigin[0][1] * boxBase[i][1] +
+		                 affinMoveOrigin[0][2] * boxBase[i][2];
 
-		boxRotated[i][1] = affinRotated[1][0] * boxBase[i][0] + affinRotated[1][1] * boxBase[i][1] +
-		                   affinRotated[1][2] * boxBase[i][2];
+		boxOrigin[i][1] = affinMoveOrigin[1][0] * boxBase[i][0] + affinMoveOrigin[1][1] * boxBase[i][1] +
+		                 affinMoveOrigin[1][2] * boxBase[i][2];
 
-		boxRotated[i][2] = affinRotated[2][0] * boxBase[i][0] + affinRotated[2][1] * boxBase[i][1] +
-		                   affinRotated[2][2] * boxBase[i][2];
+		boxOrigin[i][2] = affinMoveOrigin[2][0] * boxBase[i][0] + affinMoveOrigin[2][1] * boxBase[i][1] +
+		                 affinMoveOrigin[2][2] * boxBase[i][2];
+
+	}
+	//回転処理
+	for (int i = 0; i < 4; i++) {
+		boxRotated[i][0] = affinRotated[0][0] * boxOrigin[i][0] + affinRotated[0][1] * boxOrigin[i][1] +
+		                   affinRotated[0][2] * boxOrigin[i][2];
+
+		boxRotated[i][1] = affinRotated[1][0] * boxOrigin[i][0] + affinRotated[1][1] * boxOrigin[i][1] +
+		                   affinRotated[1][2] * boxOrigin[i][2];
+
+		boxRotated[i][2] = affinRotated[2][0] * boxOrigin[i][0] + affinRotated[2][1] * boxOrigin[i][1] +
+		                   affinRotated[2][2] * boxOrigin[i][2];
+	}
+	//元居た位置に戻す
+	for (int i = 0; i < 4; i++) {
+		boxRotated[i][0] = affinMoveAfter[0][0] * boxRotated[i][0] +
+		                   affinMoveAfter[0][1] * boxRotated[i][1] +
+		                   affinMoveAfter[0][2] * boxRotated[i][2];
+
+		boxRotated[i][1] = affinMoveAfter[1][0] * boxRotated[i][0] +
+		                   affinMoveAfter[1][1] * boxRotated[i][1] +
+		                   affinMoveAfter[1][2] * boxRotated[i][2];
+
+		boxRotated[i][2] = affinMoveAfter[2][0] * boxRotated[i][0] +
+		                   affinMoveAfter[2][1] * boxRotated[i][1] +
+		                   affinMoveAfter[2][2] * boxRotated[i][2];
 	}
 	// 拡大の計算
+	//
 	for (int i = 0; i < 4; i++) {
 
-		boxScaled[i][0] = affinScaled[0][0] * boxScaled[i][0] +
-		                  affinScaled[0][1] * boxScaled[i][1] + affinScaled[0][2] * boxScaled[i][2];
+		boxScaled[i][0] = affinScaled[0][0] * boxOrigin[i][0] +
+		                  affinScaled[0][1] * boxOrigin[i][1] + affinScaled[0][2] * boxOrigin[i][2];
 
-		boxScaled[i][1] = affinScaled[1][0] * boxScaled[i][0] +
-		                  affinScaled[1][1] * boxScaled[i][1] + affinScaled[1][2] * boxScaled[i][2];
+		boxScaled[i][1] = affinScaled[1][0] * boxOrigin[i][0] +
+		                  affinScaled[1][1] * boxOrigin[i][1] + affinScaled[1][2] * boxOrigin[i][2];
 
-		boxScaled[i][2] = affinScaled[2][0] * boxScaled[i][0] +
-		                  affinScaled[2][1] * boxScaled[i][1] + affinScaled[2][2] * boxScaled[i][2];
+		boxScaled[i][2] = affinScaled[2][0] * boxOrigin[i][0] +
+		                  affinScaled[2][1] * boxOrigin[i][1] + affinScaled[2][2] * boxOrigin[i][2];
+	}
+	for (int i = 0; i < 4; i++) {
+		boxScaled[i][0] = affinMoveAfter[0][0] * boxScaled[i][0] +
+		                  affinMoveAfter[0][1] * boxScaled[i][1] +
+		                  affinMoveAfter[0][2] * boxScaled[i][2];
+
+		boxScaled[i][1] = affinMoveAfter[1][0] * boxScaled[i][0] +
+		                   affinMoveAfter[1][1] * boxScaled[i][1] +
+		                   affinMoveAfter[1][2] * boxScaled[i][2];
+
+		boxScaled[i][2] = affinMoveAfter[2][0] * boxScaled[i][0] +
+		                   affinMoveAfter[2][1] * boxScaled[i][1] +
+		                   affinMoveAfter[2][2] * boxScaled[i][2];
 	}
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
